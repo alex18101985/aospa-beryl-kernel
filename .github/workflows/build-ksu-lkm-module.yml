@@ -1,4 +1,4 @@
-name: KernelSU LKM module
+name: KernelSU LKM Module
 on:
   workflow_dispatch:
 env:
