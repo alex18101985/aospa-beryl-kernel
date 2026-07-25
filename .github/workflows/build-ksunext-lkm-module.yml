@@ -44,7 +44,7 @@ jobs:
       - name: Clone repo and sync
         run: |
           repo init -u https://github.com/alex18101985/aospa-beryl-kernel -b main -m manifest.xml --depth=1
-          repo sync -j1 --fail-fast
+          repo sync
           cp -rvf android_kernel_xiaomi_sm8450/. kernel_platform/xiaomi/sm8450/
           sed -i 's/\r$//' kernel_platform/xiaomi/sm8450/scripts/setlocalversion
           mkdir -p device/xiaomi/marble-kernel/dtbs
