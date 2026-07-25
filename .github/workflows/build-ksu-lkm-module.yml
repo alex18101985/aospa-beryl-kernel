@@ -1,10 +1,10 @@
-name: KernelSU-Next LKM Module
+name: KernelSU LKM Module
 on:
   workflow_dispatch:
 env:
   CLANG_DIR: clang-r596125
 jobs:
-  build-ksunext-lkm-module:
+  build-ksu-lkm-module:
     runs-on: ubuntu-latest
     steps:
       - name: Free disk space
@@ -68,12 +68,11 @@ jobs:
           else
             echo "Using cached ${CLANG_DIR}"
           fi
-      - name: Include KernelSU-Next
+      - name: Include KernelSU
         run: |
           cd kernel_platform/xiaomi/sm8450
           rm -rf KernelSU
-          curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -
-      - name: Build module
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
         run: |
           cd kernel_platform/xiaomi/sm8450
           export PATH="$(realpath ../../clang/${CLANG_DIR}/bin):$PATH"
@@ -81,6 +80,6 @@ jobs:
       - name: Upload module artifact
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: ksunext-lkm-module
+          name: ksu-lkm-module
           path: kernel_platform/xiaomi/sm8450/out/kernelsu.ko
           compression-level: 9
