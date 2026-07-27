@@ -1,6 +1,5 @@
 # AOSPA Beryl Kernel
 
-- Added Westwood TCP (set as default)
 - Built with latest Clang
 
 # Include workflow file to build KernelSU LKM module
