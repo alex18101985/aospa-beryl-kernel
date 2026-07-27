@@ -7,8 +7,7 @@ SECONDS=0 # start builtin bash timer
 KP_ROOT="$(realpath ../..)"
 TC_DIR="$KP_ROOT/prebuilts-master/clang/host/linux-x86/clang-r596125"
 PREBUILTS_DIR="$KP_ROOT/prebuilts/kernel-build-tools/linux-x86"
-BRANCH="beryl"
-KERNEL_NAME="aospa"
+BRANCH="$(git branch --show-current)"
 MODULES_REPO="sm8450-modules"
 DT_REPO="sm8450-devicetrees"
 
@@ -61,7 +60,6 @@ VDLKM_DIR="$KERNEL_DIR/vendor_dlkm"
 DEFCONFIG="gki_defconfig"
 DEFCONFIGS="vendor/waipio_GKI.config \
 vendor/xiaomi_GKI.config \
-vendor/westwood.config \
 vendor/debugfs.config"
 
 MODULES_SRC="../$MODULES_REPO/qcom/opensource"
@@ -124,6 +122,8 @@ m() {
 
 build_kernel() {
     echo_i "Building kernel image..."
+    grep CONFIG_LOCALVERSION out/.config
+    grep LOCALVERSION_AUTO out/.config
     m Image
     cp out/arch/arm64/boot/Image $KERNEL_COPY_TO
     echo_i "Copied kernel to $KERNEL_COPY_TO."
@@ -237,6 +237,7 @@ build_dtbs() {
 ##
 
 export PATH="$TC_DIR/bin:$PREBUILTS_DIR/bin:$PATH"
+export LOCALVERSION="$(get_trees_rev)"
 
 $DO_CLEAN && {
     rm -rf out $MODULES_REPO
@@ -249,12 +250,12 @@ echo_i "Generating config..."
 m $DEFCONFIG
 m ./scripts/kconfig/merge_config.sh $DEFCONFIGS vendor/${TARGET}_GKI.config
 scripts/config --file out/.config \
-    --set-str LOCALVERSION "-${KERNEL_NAME}$(get_trees_rev)" \
+    --set-str LOCALVERSION "-$BRANCH" \
     -d LOCALVERSION_AUTO \
     -m CONFIG_KSU
 $NO_LTO && {
     scripts/config --file out/.config \
-        --set-str LOCALVERSION "-${KERNEL_NAME}-nolto$(get_trees_rev)" \
+        --set-str LOCALVERSION "-${BRANCH}-nolto" \
         -d LTO_CLANG_FULL -e LTO_NONE
     echo_i "Disabled LTO!"
 }
