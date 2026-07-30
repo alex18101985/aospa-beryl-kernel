@@ -80,10 +80,16 @@ jobs:
         run: |
           cd kernel_platform/xiaomi/sm8450
           export PATH="$(realpath ../../clang/${CLANG_DIR}/bin):$PATH"
-          ./build.sh marble --only-kernel  
+          ./build.sh marble 
       - name: Upload kernel image artifact
         uses: actions/upload-artifact@v7.0.1
         with:
           name: kernel-image
           path: device/xiaomi/marble-kernel/Image
+          compression-level: 9
+      - name: Upload LKM module artifact
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: ksu-lkm-module
+          path: kernel_platform/xiaomi/sm8450/out/kernelsu.ko
           compression-level: 9
