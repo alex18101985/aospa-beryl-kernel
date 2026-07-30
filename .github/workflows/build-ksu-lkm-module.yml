@@ -37,7 +37,10 @@ jobs:
       - name: Setup build environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y bc device-tree-compiler
+          sudo apt-get install -y --no-install-recommends \
+            bc bison build-essential ccache cpio curl flex git jq kmod libelf-dev \
+            libncurses-dev libssl-dev lld llvm clang file python3 python-is-python3 \
+            rsync unzip zip zstd
           sudo apt-get clean
           sudo curl --create-dirs -o /usr/local/bin/repo -L https://storage.googleapis.com/git-repo-downloads/repo
           sudo chmod a+rx /usr/local/bin/repo
