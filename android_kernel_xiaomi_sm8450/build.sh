@@ -8,7 +8,7 @@ KP_ROOT="$(realpath ../..)"
 TC_DIR="$KP_ROOT/prebuilts-master/clang/host/linux-x86/clang-r596125"
 PREBUILTS_DIR="$KP_ROOT/prebuilts/kernel-build-tools/linux-x86"
 BRANCH="beryl"
-KERNEL_NAME="aospa"
+KERNEL_NAME="beryl"
 MODULES_REPO="sm8450-modules"
 DT_REPO="sm8450-devicetrees"
 
