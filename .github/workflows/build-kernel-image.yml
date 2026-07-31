@@ -5,7 +5,7 @@ env:
   CLANG_DIR: clang-r596125
 jobs:
   build-kernel-image:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Free disk space
         uses: endersonmenezes/free-disk-space@main
@@ -30,18 +30,14 @@ jobs:
           sudo sysctl -w vm.swappiness=100
       - name: Check repository
         uses: actions/checkout@v7.0.1
-#      - name: Setup Python
-#        uses: actions/setup-python@v7.0.0
-#        with:
-#          python-version: '3.x'
+      - name: Setup Python
+        uses: actions/setup-python@v7.0.0
+        with:
+          python-version: 'pypy3.11'
       - name: Setup build environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            bc bison build-essential ccache cpio curl flex git jq kmod libelf-dev \
-            libncurses-dev libssl-dev lld llvm clang file python3 python-is-python3 \
-            rsync unzip zip zstd
-          sudo apt-get clean
+          sudo apt-get install -y bc device-tree-compiler
           sudo curl --create-dirs -o /usr/local/bin/repo -L https://storage.googleapis.com/git-repo-downloads/repo
           sudo chmod a+rx /usr/local/bin/repo
       - name: Clone repo and sync
@@ -86,10 +82,4 @@ jobs:
         with:
           name: kernel-image
           path: device/xiaomi/marble-kernel/Image
-          compression-level: 9
-      - name: Upload LKM module artifact
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: ksu-lkm-module
-          path: kernel_platform/xiaomi/sm8450/out/kernelsu.ko
           compression-level: 9
